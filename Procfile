@@ -1,1 +1,1 @@
-web: go run goserver.go
+web: bin/biocadtest
