@@ -1,1 +1,1 @@
-web: bin/biocadtest
+web: biocadtest
