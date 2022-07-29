@@ -1,0 +1,38 @@
+{{ define "plot"}}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html, body, #container {
+        width: 99%;
+        height: 97%;
+      }
+    </style>
+    <title>AnyChart Basic Example</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="https://cdn.anychart.com/js/latest/anychart-bundle.min.js"></script>
+    <script>
+	  
+anychart.onDocumentLoad(function() {
+  var chart = anychart.line([
+    {{range .Datas}}
+      {x: "{{.Time}}", value: {{.Value}}},
+      {{end}}
+  ]);
+  chart.title("{{ .PlotTitle }}");
+  chart.container("container").draw();
+});
+    </script>
+
+    <form method="LINK" action="/">
+      <input type="submit" value="Назад">
+    </form>
+  
+  </body>
+
+
+</html>
+
+{{end}}

@@ -1,0 +1,56 @@
+{{ define "upload"}}
+
+<html>
+<head>
+    <title>Загрузка файлов</title>
+
+</head>
+<body>
+<div>Выберите файл:</div>
+<form method="get" enctype="application/x-www-form-urlencoded" action="/processing">
+
+    <p><select id="mySelectId" size="10" multiple name="filelist">
+
+            {{range .Data}}
+            <option value="{{ . }}">{{ . }}</option>
+            {{end}}
+            </select></p>
+
+    <p><input type="submit" name ="mPlot" value="Построить график"></p>
+
+    <p><input type="submit" name ="del" value="Удалить"></p>
+
+</form>
+
+    <form method="post" enctype="multipart/form-data" action="/upload">
+    <div>Загрузить файл на сервер:</div><br>
+    <input type="file" name="my-file">
+    <input type="submit" name="upl" VALUE="Загрузить">
+
+
+</form>
+
+<script type="text/javascript">
+
+    var objSel = document.getElementById("mySelectId");
+    var conn = new WebSocket("ws://{{.Host}}/ws?lastMod={{.LastMod}}");
+    conn.onclose = function(evt) {
+        objSel.options.length = 0;
+        objSel.options[0] = new Option("Connection closed", "Connection closed");
+    }
+    conn.onmessage = function(evt) {
+        console.log('file updated');
+        var arr = evt.data.split(':');
+        objSel.options.length = 0;
+        var i = 0;
+        while (i < arr.length) {
+            objSel.options[i] = new Option(arr[i], arr[i]);
+            i++;
+        }
+    }
+</script>
+
+</body>
+</html>
+
+{{end}}
